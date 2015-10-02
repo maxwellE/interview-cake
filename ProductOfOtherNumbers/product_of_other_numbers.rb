@@ -12,21 +12,32 @@ require "pry"
 
 class ProductOfOtherNumbers
   def self.get_products_of_all_ints_except_at_index(array)
-    # brute solution
     final_array = []
-    # O(n) for this outer loop
-    array.each_with_index do |value, index|
-      # O(n) for this inner looping
-      final_array << self.array_without_index(array, index).reduce(1, :*)
+    array.each_with_index do |_, index|
+      final_array << self.products_of_all_ints_before_index(array, index) * self.products_of_all_ints_after_index(array, index)
     end
-    # Perf is O(n^2), we can do better!
     final_array
+   end
+
+  def self.products_of_all_ints_before_index(array, index)
+    products_of_ints_before_index = [1] * array.length
+    product_so_far = 1
+    array.each_with_index do |value, i|
+      products_of_ints_before_index[i] = product_so_far
+      product_so_far *= value
+    end
+    products_of_ints_before_index[index]
   end
 
-  def self.array_without_index(array, index)
-    final_array = []
-    array.each_with_index { |value, i| final_array << value if i != index }
-    final_array
+  def self.products_of_all_ints_after_index(array, index)
+    final_index = array.length - 1
+    products_of_ints_after_index = [1] * array.length
+    product_so_far = 1
+    final_index.downto(0) do |i|
+      products_of_ints_after_index[i] = product_so_far
+      product_so_far *= array.at(i)
+    end
+    products_of_ints_after_index[index]
   end
 end
 
@@ -38,5 +49,9 @@ if __FILE__ == $0
   zeroes_example = [1, 0, 3, 4]
   puts "Zeros situation: " + zeroes_example.to_s
   puts "Expected answer: [0, 12, 0, 0], got " + ProductOfOtherNumbers.get_products_of_all_ints_except_at_index(zeroes_example).to_s
+  puts "====================\n"
+  another_example = [1, 2, 6, 5, 9]
+  puts "Another situation: " + another_example.to_s
+  puts "Expected answer: [540, 270, 90, 108, 60], got " + ProductOfOtherNumbers.get_products_of_all_ints_except_at_index(another_example).to_s
 end
 
