@@ -34,5 +34,9 @@ if __FILE__ == $0
   simple_example = [1, 7, 3, 4]
   puts "Simple situation: " + simple_example.to_s
   puts "Expected answer: [84, 12, 28, 21], got " + ProductOfOtherNumbers.get_products_of_all_ints_except_at_index(simple_example).to_s
+  puts "====================\n"
+  zeroes_example = [1, 0, 3, 4]
+  puts "Zeros situation: " + zeroes_example.to_s
+  puts "Expected answer: [0, 12, 0, 0], got " + ProductOfOtherNumbers.get_products_of_all_ints_except_at_index(zeroes_example).to_s
 end
 
