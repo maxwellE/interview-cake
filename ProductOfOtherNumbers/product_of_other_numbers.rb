@@ -12,33 +12,20 @@ require "pry"
 
 class ProductOfOtherNumbers
   def self.get_products_of_all_ints_except_at_index(array)
-    final_array = []
-    array.each_with_index do |_, index|
-      final_array << self.products_of_all_ints_before_index(array, index) * self.products_of_all_ints_after_index(array, index)
-    end
-    final_array
-   end
-
-  def self.products_of_all_ints_before_index(array, index)
-    products_of_ints_before_index = [1] * array.length
+    products_of_ints_at_index = [1] * array.length
     product_so_far = 1
     array.each_with_index do |value, i|
-      products_of_ints_before_index[i] = product_so_far
+      products_of_ints_at_index[i] = product_so_far
       product_so_far *= value
     end
-    products_of_ints_before_index[index]
-  end
-
-  def self.products_of_all_ints_after_index(array, index)
     final_index = array.length - 1
-    products_of_ints_after_index = [1] * array.length
     product_so_far = 1
     final_index.downto(0) do |i|
-      products_of_ints_after_index[i] = product_so_far
+      products_of_ints_at_index[i] *= product_so_far
       product_so_far *= array.at(i)
     end
-    products_of_ints_after_index[index]
-  end
+    products_of_ints_at_index
+   end
 end
 
 if __FILE__ == $0
