@@ -7,6 +7,19 @@ require "pry"
 class Coin
   @@memorized_change_possibility_calls = {}
 
+  def self.number_of_ways_to_make_change_bottom_up(amount, denominations)
+    ways_of_doing_n_cents = []
+    ways_of_doing_n_cents[0] = 1
+    denominations.each do |denomination|
+      denomination.upto(amount + 1) do |higher_amount|
+        higher_amount_remainder = higher_amount - denomination
+        ways_of_doing_n_cents[higher_amount] = 0 if ways_of_doing_n_cents[higher_amount].nil?
+        ways_of_doing_n_cents[higher_amount] += ways_of_doing_n_cents[higher_amount_remainder]
+      end
+    end
+    return ways_of_doing_n_cents[amount]
+  end
+
   def self.number_of_ways_to_make_change(amount, denominations)
     ways_to_make_change = 0
     remaining_change = amount
@@ -40,6 +53,11 @@ if __FILE__ == $0
   denominations = [1,2,3]
   puts "Simple situation: Amount: $#{amount}, Denominations: #{denominations.to_s}"
   simple_solution = Coin.number_of_ways_to_make_change(amount, denominations)
+  puts "Expected solution: 4. Solution is: #{simple_solution.to_s}"
+  puts "=================="
+
+  puts "Simple bottom up situation: Amount: $#{amount}, Denominations: #{denominations.to_s}"
+  simple_solution = Coin.number_of_ways_to_make_change_bottom_up(amount, denominations)
   puts "Expected solution: 4. Solution is: #{simple_solution.to_s}"
   puts "=================="
 end
